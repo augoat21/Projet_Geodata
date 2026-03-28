@@ -1,0 +1,7 @@
+project:
+  name: "Projet Geodata"
+  version: "0.1"
+
+paths:
+  data: "data/"
+  outputs: "outputs/"

@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+data/
+outputs/
+ml/datasets/
+ml/models/
+test_gee.py
+data_sources/fires/historical/
