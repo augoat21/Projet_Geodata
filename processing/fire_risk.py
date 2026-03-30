@@ -249,10 +249,16 @@ def generate_risk_image(day_df, country):
     if len(lats) < 3:
         return None, None
 
-    # Bornes de l'image avec petit padding
-    pad = 0.25
-    lat_min, lat_max = lats.min() - pad, lats.max() + pad
-    lon_min, lon_max = lons.min() - pad, lons.max() + pad
+    # Bornes de l'image : utiliser la bbox du pays pour couvrir tout le territoire
+    bbox = COUNTRY_BBOX.get(country)
+    if bbox:
+        pad = 0.25
+        lat_min, lat_max = bbox["lat_min"] - pad, bbox["lat_max"] + pad
+        lon_min, lon_max = bbox["lon_min"] - pad, bbox["lon_max"] + pad
+    else:
+        pad = 0.25
+        lat_min, lat_max = lats.min() - pad, lats.max() + pad
+        lon_min, lon_max = lons.min() - pad, lons.max() + pad
 
     # Grille fine pour l'interpolation
     grid_res = 200

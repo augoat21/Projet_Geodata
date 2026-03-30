@@ -382,7 +382,7 @@ def creer_carte(fires_df, country, satellite_tiles=None, sat_center=None):
     max_points = 2000
     if len(fires_df) > max_points:
         df_affichage = fires_df.sample(n=max_points, random_state=42)
-        st.info(f"ℹAffichage de {max_points} points sur {len(fires_df)} total pour les performances")
+        st.info(f"Affichage de {max_points} points sur {len(fires_df)} total pour les performances")
     else:
         df_affichage = fires_df
 
@@ -398,7 +398,7 @@ def creer_carte(fires_df, country, satellite_tiles=None, sat_center=None):
         heure = formater_heure(row.get('acq_time'))
         date_str = row['acq_date'].strftime('%Y-%m-%d') if isinstance(row['acq_date'], pd.Timestamp) else str(row['acq_date'])
 
-        tooltip = f"<b>{frp:.1f} MW</b><br>📅 {date_str} {heure}"
+        tooltip = f"<b>{frp:.1f} MW</b><br>{date_str} {heure}"
 
         marker = folium.CircleMarker(
             location=[lat, lon],
@@ -537,7 +537,7 @@ with st.sidebar:
         all_countries = get_available_countries()
 
         if not all_countries:
-            st.error("❌ Aucun pays détecté dans les fichiers CSV")
+            st.error("Aucun pays détecté dans les fichiers CSV")
             st.stop()
 
         country = st.selectbox(

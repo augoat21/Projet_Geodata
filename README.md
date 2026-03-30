@@ -8,6 +8,8 @@ Projet de geomatique centre sur la surveillance des feux a l'echelle mondiale et
 
 L'application combine plusieurs sources de donnees ouvertes (NASA FIRMS, Sentinel-2, Open-Meteo, ESA WorldCover) pour offrir a la fois un catalogue interactif des feux detectes et un outil de prediction du risque base sur un modele de machine learning.
 
+Si vous n'avez pas la possibilité de télécharger l'application et que vous trouvez que les screens expliquent mal, je vous mets une vidéo youtube qui vous montre comment fonctionne l'application : https://youtu.be/fMrf2PHmSvc
+
 ---
 
 ## Pourquoi ce projet ?

@@ -9,9 +9,22 @@ from io import StringIO
 from datetime import timedelta
 import streamlit as st
 from data_sources.fires.firms import COUNTRY_BBOX
+from processing.fire_risk import get_country_polygon
+from shapely.geometry import Point
 
 # Configuration
 FIRMS_API_BASE = "https://firms.modaps.eosdis.nasa.gov/api"
+
+
+def _filter_by_polygon(df, country):
+    """Filtre les points pour ne garder que ceux à l'intérieur du polygone du pays."""
+    if country == "Monde entier" or df.empty:
+        return df
+    poly = get_country_polygon(country)
+    if poly is None:
+        return df
+    mask = df.apply(lambda r: poly.contains(Point(r["longitude"], r["latitude"])), axis=1)
+    return df[mask].reset_index(drop=True)
 
 
 def get_available_countries():
@@ -101,7 +114,10 @@ def load_fires_api(country, start_date, end_date, api_key):
                 available_columns = [col for col in columns_order if col in df.columns]
                 df = df[available_columns]
 
-                st.success(f"✅ {len(df)} feux chargés depuis l'API FIRMS")
+                # Filtrer par polygone du pays (la bbox inclut des zones hors frontières)
+                df = _filter_by_polygon(df, country)
+
+                st.success(f"{len(df)} feux chargés depuis l'API FIRMS")
                 return df
 
             elif response.status_code == 401:
@@ -174,6 +190,9 @@ def _load_fires_by_chunks(country, start_date, end_date, api_key, chunk_days=10)
         ]
         available_columns = [col for col in columns_order if col in result.columns]
         result = result[available_columns]
+
+        # Filtrer par polygone du pays
+        result = _filter_by_polygon(result, country)
 
         return result
 
